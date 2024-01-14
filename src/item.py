@@ -1,3 +1,7 @@
+import csv
+from config import PATH_TO_CSV
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -13,10 +17,24 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
-        self.all.append(self)
+        Item.all.append(self)
+
+    @property
+    def name(self):
+        """Возвращает название товара"""
+        return self.__name
+
+    @name.setter
+    def name(self, new_name):
+        """Устанавливает новое название товара с ограничением в 10 символов"""
+        if len(new_name) > 10:
+            print("Длина наименования товара превышает 10 символов")
+            self.__name = new_name[:10]
+        else:
+            self.__name = new_name
 
     def calculate_total_price(self) -> float:
         """
@@ -31,4 +49,29 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price *= self.pay_rate
+
+    @classmethod
+    def instantiate_from_csv(cls, path):
+        Item.all.clear()
+        with open(path, newline="", encoding="windows-1251") as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                cls(row["name"], float(row["price"]), int(row["quantity"]))
+                # print(row)
+
+    @staticmethod
+    def string_to_number(string: str) -> int or None:
+        if string.isalpha():
+            print("Нужно было ввести число")
+            return None
+        else:
+            return int(float(string))
+
+
+# if __name__ == '__main__':
+#     Item.instantiate_from_csv(PATH_TO_CSV)
+#     item1 = Item.all[0]
+#     print(item1.price)
+#     print(item1.quantity)
+#     print(item1.name)
 
