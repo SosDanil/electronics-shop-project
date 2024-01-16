@@ -1,5 +1,4 @@
 import csv
-from config import PATH_TO_CSV
 
 
 class Item:
@@ -52,7 +51,7 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, path):
-        Item.all.clear()
+        cls.all.clear()
         with open(path, newline="", encoding="windows-1251") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
@@ -60,18 +59,9 @@ class Item:
                 # print(row)
 
     @staticmethod
-    def string_to_number(string: str) -> int or None:
+    def string_to_number(string: str) -> int | None:
         if string.isalpha():
             print("Нужно было ввести число")
             return None
         else:
             return int(float(string))
-
-
-# if __name__ == '__main__':
-#     Item.instantiate_from_csv(PATH_TO_CSV)
-#     item1 = Item.all[0]
-#     print(item1.price)
-#     print(item1.quantity)
-#     print(item1.name)
-
