@@ -30,3 +30,8 @@ def test_instantiate_from_csv():
     assert item2.name == "Ноутбук"
     assert item2.price == 1000
     assert item2.quantity == 3
+
+
+def test_repr():
+    assert repr(item1) == "Item('Samsung M3', 10000.0, 5)"
+    assert str(item1) == "Samsung M3"
