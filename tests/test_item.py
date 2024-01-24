@@ -3,14 +3,22 @@ import pytest
 
 from src.item import Item
 from config import PATH_TO_CSV
-
-
-# item1 = Item("Samsung M3", 10000.0, 5)  # тестовый экземпляр
+from src.phone import Phone
 
 
 @pytest.fixture
 def test_item1():
     return Item("Samsung M3", 10000.0, 5)
+
+
+@pytest.fixture
+def test_item2():
+    return Phone("Xiaomi", 7000.0, 150, 2)
+
+
+@pytest.fixture
+def test_item3():
+    return Phone("Iphone", 100000.0, 15, 3)
 
 
 def test_calculate_total_price(test_item1):
@@ -39,6 +47,14 @@ def test_instantiate_from_csv():
     assert item2.quantity == 3
 
 
-def test_repr(test_item1):
+def test_repr_and_str(test_item1):
     assert repr(test_item1) == "Item('Samsung M3', 10000.0, 5)"
     assert str(test_item1) == "Samsung M3"
+
+
+def test_add(test_item1, test_item2, test_item3):
+    total_quantity1 = test_item1 + test_item2  # объекты классов Item и Phone
+    total_quantity2 = test_item2 + test_item3  # два объекта класса Phone
+    assert total_quantity1 == 155
+    assert total_quantity2 == 165
+
