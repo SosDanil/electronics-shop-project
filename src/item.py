@@ -1,4 +1,7 @@
 import csv
+import os.path
+
+from src.InstantiateCSVError import InstantiateCSVError
 
 
 class Item:
@@ -63,12 +66,20 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls, path):
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Отсутствует файл {path}")
         cls.all.clear()
         with open(path, newline="", encoding="windows-1251") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
+                if len(row) < 3:
+                    raise InstantiateCSVError(path)
                 cls(row["name"], float(row["price"]), int(row["quantity"]))
-                # print(row)
+                print(row)
+        # except FileNotFoundError:
+        #     print(f"Отсутствует файл {path}")
+        # except InstantiateCSVError:
+        #     print(f"Файл {path} поврежден")
 
     @staticmethod
     def string_to_number(string: str) -> int | None:
