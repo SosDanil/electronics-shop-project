@@ -72,14 +72,10 @@ class Item:
         with open(path, newline="", encoding="windows-1251") as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                if len(row) < 3:
+                if not row.get('name') or not row.get('price') or not row.get('quantity'):
                     raise InstantiateCSVError(path)
                 cls(row["name"], float(row["price"]), int(row["quantity"]))
                 print(row)
-        # except FileNotFoundError:
-        #     print(f"Отсутствует файл {path}")
-        # except InstantiateCSVError:
-        #     print(f"Файл {path} поврежден")
 
     @staticmethod
     def string_to_number(string: str) -> int | None:
